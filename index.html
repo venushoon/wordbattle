@@ -2,24 +2,24 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>유의어 배틀 게임</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
     
-    /* 멀티터치 최적화 및 제스처 방지 (화면 튕김, 드래그, 줌 완전 차단) */
+    /* 멀티터치 및 제스처 완벽 차단 (게임 최적화) */
     body { 
       font-family: 'Noto Sans KR', sans-serif; 
-      touch-action: none; /* 멀티터치 필수 속성 */
-      -webkit-tap-highlight-color: transparent; 
-      user-select: none; 
+      touch-action: none; /* 화면 스크롤, 줌 등 모든 터치 제스처 차단 */
+      -webkit-tap-highlight-color: transparent; /* 터치 시 파란색 깜빡임 제거 */
+      user-select: none; /* 글자 드래그 방지 */
       -webkit-user-select: none; 
       -webkit-touch-callout: none;
-      overflow: hidden;
+      overflow: hidden; /* 스크롤바 생성 원천 차단 */
     }
     
-    .pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    .pop-in { animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     .modal-in { animation: fadeIn 0.3s ease-out forwards; }
     
     @keyframes popIn {
@@ -39,7 +39,6 @@
       40%, 60% { transform: translate3d(6px, 0, 0); }
     }
 
-    /* 버튼 터치 시 물리적 스케일 축소 효과 */
     .btn-pressed { transform: scale(0.95) !important; filter: brightness(0.9); transition: all 0.1s; }
   </style>
 </head>
@@ -55,35 +54,35 @@
       <div>
         <h2 class="text-xl lg:text-2xl font-bold text-slate-600 mb-3 text-center">👥 몇 명이서 대결할까요?</h2>
         <div class="flex gap-2 lg:gap-4 justify-center">
-          <button onclick="setPlayerCount(2)" id="btn-p2" class="flex-1 py-3 lg:py-4 text-xl lg:text-2xl font-bold rounded-xl lg:rounded-2xl border-4 border-slate-200 hover:bg-slate-50 transition-colors">2인 배틀</button>
-          <button onclick="setPlayerCount(3)" id="btn-p3" class="flex-1 py-3 lg:py-4 text-xl lg:text-2xl font-bold rounded-xl lg:rounded-2xl border-4 border-slate-200 hover:bg-slate-50 transition-colors">3인 배틀</button>
-          <button onclick="setPlayerCount(4)" id="btn-p4" class="flex-1 py-3 lg:py-4 text-xl lg:text-2xl font-bold rounded-xl lg:rounded-2xl border-4 border-blue-500 bg-blue-50 text-blue-700 transition-colors">4인 배틀</button>
+          <button onclick="window.setPlayerCount(2)" id="btn-p2" class="flex-1 py-3 lg:py-4 text-xl lg:text-2xl font-bold rounded-xl lg:rounded-2xl border-4 border-slate-200 hover:bg-slate-50 transition-colors">2인 배틀</button>
+          <button onclick="window.setPlayerCount(3)" id="btn-p3" class="flex-1 py-3 lg:py-4 text-xl lg:text-2xl font-bold rounded-xl lg:rounded-2xl border-4 border-slate-200 hover:bg-slate-50 transition-colors">3인 배틀</button>
+          <button onclick="window.setPlayerCount(4)" id="btn-p4" class="flex-1 py-3 lg:py-4 text-xl lg:text-2xl font-bold rounded-xl lg:rounded-2xl border-4 border-blue-500 bg-blue-50 text-blue-700 transition-colors">4인 배틀</button>
         </div>
       </div>
 
       <div>
         <h2 class="text-xl lg:text-2xl font-bold text-slate-600 mb-3 text-center">🎮 어떤 방식으로 대결할까요?</h2>
         <div class="flex flex-col gap-3 lg:gap-4">
-          <button onclick="setGameMode('A')" id="btn-modeA" class="w-full py-3 lg:py-4 px-4 lg:px-6 rounded-xl lg:rounded-2xl border-4 border-slate-200 flex flex-col items-center hover:bg-slate-50 transition-colors text-slate-600">
+          <button onclick="window.setGameMode('A')" id="btn-modeA" class="w-full py-3 lg:py-4 px-4 lg:px-6 rounded-xl lg:rounded-2xl border-4 border-slate-200 flex flex-col items-center hover:bg-slate-50 transition-colors text-slate-600">
             <span class="text-xl lg:text-2xl font-bold mb-1 text-slate-800">🅰️ 개별 랜덤 출제 (기본)</span>
             <span class="text-xs lg:text-sm font-medium">플레이어마다 문제가 다르게 나옵니다. (커닝 방지)</span>
           </button>
-          <button onclick="setGameMode('B')" id="btn-modeB" class="w-full py-3 lg:py-4 px-4 lg:px-6 rounded-xl lg:rounded-2xl border-4 border-blue-500 bg-blue-50 flex flex-col items-center text-blue-700 transition-colors">
+          <button onclick="window.setGameMode('B')" id="btn-modeB" class="w-full py-3 lg:py-4 px-4 lg:px-6 rounded-xl lg:rounded-2xl border-4 border-blue-500 bg-blue-50 flex flex-col items-center text-blue-700 transition-colors">
             <span class="text-xl lg:text-2xl font-bold mb-1 text-blue-800">🅱️ 동일 출제 스피드전</span>
             <span class="text-xs lg:text-sm font-medium">모두 똑같은 문제를 풉니다! 누가 먼저 푸나 경쟁하세요.</span>
           </button>
         </div>
       </div>
 
-      <button onclick="startGame()" class="w-full rounded-full py-4 lg:py-6 text-3xl lg:text-4xl font-black bg-blue-500 text-white shadow-lg lg:shadow-[0_10px_25px_rgba(59,130,246,0.5)] transition-transform active:scale-95 hover:bg-blue-600 tracking-wide mt-2">
+      <button onclick="window.startGame()" class="w-full rounded-full py-4 lg:py-6 text-3xl lg:text-4xl font-black bg-blue-500 text-white shadow-lg lg:shadow-[0_10px_25px_rgba(59,130,246,0.5)] transition-transform active:scale-95 hover:bg-blue-600 tracking-wide mt-2">
         🚀 배틀 시작!
       </button>
     </div>
 
     <div class="mt-4 lg:mt-6 flex flex-wrap items-center justify-center gap-3 bg-white/80 px-6 py-3 rounded-full shadow-md backdrop-blur-sm">
       <span class="font-bold text-slate-600 text-sm lg:text-base">📂 선생님 단어장</span>
-      <button onclick="downloadTemplate()" class="rounded-lg border-2 border-slate-400 px-3 py-1.5 text-xs lg:text-sm font-bold hover:bg-slate-200 transition-colors">📥 양식 다운로드</button>
-      <input type="file" id="file-input" accept=".csv" class="w-48 text-xs lg:text-sm font-bold text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer" onchange="handleFileUpload(event)" />
+      <button onclick="window.downloadTemplate()" class="rounded-lg border-2 border-slate-400 px-3 py-1.5 text-xs lg:text-sm font-bold hover:bg-slate-200 transition-colors">📥 양식 다운로드</button>
+      <input type="file" id="file-input" accept=".csv" class="w-48 text-xs lg:text-sm font-bold text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer" onchange="window.handleFileUpload(event)" />
       <span id="upload-msg" class="text-xs lg:text-sm font-bold hidden px-2"></span>
     </div>
   </div>
@@ -96,7 +95,7 @@
         <span class="text-sm lg:text-lg font-bold text-slate-400">남은 시간</span>
         <span id="global-time" class="text-4xl lg:text-5xl font-black text-rose-500 drop-shadow-[0_0_10px_rgba(244,63,94,0.5)] w-16 text-center">60</span>
       </div>
-      <button onclick="goToHome()" class="px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg lg:rounded-xl bg-slate-700 text-slate-300 text-sm lg:text-base font-bold hover:bg-slate-600">나가기</button>
+      <button onclick="window.goToHome()" class="px-3 py-1.5 lg:px-4 lg:py-2 rounded-lg lg:rounded-xl bg-slate-700 text-slate-300 text-sm lg:text-base font-bold hover:bg-slate-600">나가기</button>
     </div>
 
     <div class="w-full h-1 lg:h-2 bg-slate-700 flex-shrink-0">
@@ -117,10 +116,10 @@
         </div>
 
       <div class="p-4 lg:p-8 flex gap-3 lg:gap-4 bg-white flex-shrink-0">
-        <button onclick="goToHome()" class="flex-1 rounded-full py-4 lg:py-6 text-xl lg:text-3xl font-black bg-slate-200 text-slate-700 shadow-lg hover:bg-slate-300 transition-transform active:scale-95">
+        <button onclick="window.goToHome()" class="flex-1 rounded-full py-4 lg:py-6 text-xl lg:text-3xl font-black bg-slate-200 text-slate-700 shadow-lg hover:bg-slate-300 transition-transform active:scale-95">
           🏠 처음으로
         </button>
-        <button onclick="startGame()" class="flex-1 rounded-full py-4 lg:py-6 text-xl lg:text-3xl font-black bg-amber-400 text-amber-900 shadow-lg hover:bg-amber-300 transition-transform active:scale-95">
+        <button onclick="window.startGame()" class="flex-1 rounded-full py-4 lg:py-6 text-xl lg:text-3xl font-black bg-amber-400 text-amber-900 shadow-lg hover:bg-amber-300 transition-transform active:scale-95">
           🔄 다시 한판!
         </button>
       </div>
@@ -149,4 +148,344 @@
 망가지다,부서지다,고쳐지다,튼튼해지다,예뻐지다,좋아지다,빛나다
 머무르다,묵다,떠나다,도망치다,이사하다,사라지다,숨다
 모자라다,부족하다,충분하다,넘치다,많다,남다,크다
-견디다,참다,포기하다,울다,
+견디다,참다,포기하다,울다,도망치다,쓰러지다,버리다
+뽐내다,자랑하다,부끄러워하다,숨다,슬퍼하다,사과하다,도망치다
+짐작하다,예상하다,모르다,잊어버리다,실수하다,숨기다,지우다
+기르다,키우다,버리다,죽이다,괴롭히다,팔다,잃어버리다
+가리키다,일컫다,감추다,덮다,모른체하다,지우다,숨기다
+고치다,수리하다,망가뜨리다,부수다,버리다,찢다,숨기다
+겪다,경험하다,피하다,도망치다,잊다,숨다,버리다
+살피다,관찰하다,지나치다,눈감다,버리다,잊다,도망치다
+알맞다,적당하다,모자라다,넘치다,다르다,이상하다,나쁘다
+어긋나다,틀어지다,맞다,어울리다,친해지다,좋다,기쁘다
+차분하다,침착하다,서두르다,당황하다,급하다,놀라다,화내다
+튼튼하다,단단하다,약하다,부드럽다,가볍다,흐리다,작다
+밝다,환하다,어둡다,우울하다,느리다,차갑다,조용하다
+어둡다,캄캄하다,밝다,환하다,깨끗하다,따뜻하다,기쁘다
+힘들다,고되다,쉽다,즐겁다,편안하다,가볍다,조용하다
+쉽다,간단하다,어렵다,복잡하다,무겁다,심각하다,차갑다
+어렵다,까다롭다,쉽다,편하다,가볍다,맑다,따뜻하다
+깨끗하다,말끔하다,더럽다,흐리다,거칠다,어둡다,시끄럽다
+강하다,힘세다,약하다,무르다,느리다,조용하다,가볍다
+약하다,허약하다,강하다,든든하다,빠르다,밝다,용감하다
+재미있다,즐겁다,지루하다,딱딱하다,무겁다,차갑다,슬프다
+지루하다,심심하다,재미있다,화려하다,반갑다,기쁘다,고맙다
+따뜻하다,포근하다,차갑다,서늘하다,빠르다,무겁다,슬프다
+차갑다,서늘하다,따뜻하다,포근하다,밝다,부드럽다,크다
+착하다,선하다,나쁘다,거칠다,고약하다,무섭다,시끄럽다
+나쁘다,고약하다,좋다,착하다,맑다,튼튼하다,친절하다
+넓다,드넓다,좁다,짧다,작다,약하다,차갑다
+좁다,비좁다,넓다,환하다,거대하다,높다,빠르다
+높다,우뚝하다,낮다,얕다,작다,짧다,좁다
+낮다,얕다,높다,밝다,강하다,넓다,용감하다`;
+
+    const GAME_TIME = 60;
+    const CHOICES_PER_ROUND = 4;
+
+    const THEMES = [
+      { id: 1, name: '강아지', icon: '🐶', border: 'border-blue-500', bgMain: 'bg-blue-900', bgCard: 'bg-slate-800', text: 'text-blue-400', correct: 'bg-blue-500 text-white border-blue-400', wrong: 'bg-rose-600 text-white border-rose-500 opacity-50' },
+      { id: 2, name: '고양이', icon: '🐱', border: 'border-orange-500', bgMain: 'bg-orange-900', bgCard: 'bg-slate-800', text: 'text-orange-400', correct: 'bg-orange-500 text-white border-orange-400', wrong: 'bg-rose-600 text-white border-rose-500 opacity-50' },
+      { id: 3, name: '토끼', icon: '🐰', border: 'border-pink-500', bgMain: 'bg-pink-900', bgCard: 'bg-slate-800', text: 'text-pink-400', correct: 'bg-pink-500 text-white border-pink-400', wrong: 'bg-rose-600 text-white border-rose-500 opacity-50' },
+      { id: 4, name: '햄스터', icon: '🐹', border: 'border-green-500', bgMain: 'bg-green-900', bgCard: 'bg-slate-800', text: 'text-green-400', correct: 'bg-green-500 text-white border-green-400', wrong: 'bg-rose-600 text-white border-rose-500 opacity-50' }
+    ];
+
+    let wordBank = [];
+    let config = { playerCount: 4, mode: 'B' }; 
+    let globalTimer = null;
+    let globalTimeLeft = GAME_TIME;
+    let sharedSequence = []; 
+    let playersState = {};
+
+    function parseCSV(csvText) {
+      const lines = csvText.split("\n").map(l => l.trim()).filter(l => l);
+      const words = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(",").map(c => c.trim());
+        if (cols.length >= 3) {
+          words.push({ word: cols[0], correct: cols[1], wrong: cols.slice(2).filter(w => w !== "") });
+        }
+      }
+      return words;
+    }
+
+    function shuffle(array) {
+      const copied = [...array];
+      for (let i = copied.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copied[i], copied[j]] = [copied[j], copied[i]];
+      }
+      return copied;
+    }
+
+    // 초기 파싱 수행
+    wordBank = parseCSV(SAMPLE_CSV_DATA);
+
+    // ================= 전역(Window) 함수 등록 (오류 방지 핵심) =================
+    window.downloadTemplate = function() {
+      const blob = new Blob(["\uFEFF" + SAMPLE_CSV_DATA], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "유의어배틀_단어장양식.csv";
+      link.click();
+    };
+
+    window.handleFileUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      const msgEl = document.getElementById('upload-msg');
+      reader.onload = function(e) {
+        try {
+          const newWordBank = parseCSV(e.target.result);
+          if (newWordBank.length < 5) throw new Error("최소 5개의 단어가 필요합니다.");
+          wordBank = newWordBank;
+          msgEl.className = "text-xs lg:text-sm font-bold text-emerald-600 px-2 block break-keep";
+          msgEl.innerText = `✅ 적용 완료! (${wordBank.length}개)`;
+        } catch (error) {
+          msgEl.className = "text-xs lg:text-sm font-bold text-rose-600 px-2 block break-keep";
+          msgEl.innerText = `⚠️ 양식 오류`;
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    };
+
+    window.setPlayerCount = function(n) {
+      config.playerCount = n;
+      [2, 3, 4].forEach(i => {
+        const btn = document.getElementById(`btn-p${i}`);
+        if (i === n) { btn.classList.replace('border-slate-200', 'border-blue-500'); btn.classList.add('bg-blue-50', 'text-blue-700'); }
+        else { btn.classList.replace('border-blue-500', 'border-slate-200'); btn.classList.remove('bg-blue-50', 'text-blue-700'); }
+      });
+    };
+
+    window.setGameMode = function(mode) {
+      config.mode = mode;
+      const btnA = document.getElementById('btn-modeA');
+      const btnB = document.getElementById('btn-modeB');
+      if (mode === 'A') {
+        btnA.classList.replace('border-slate-200', 'border-blue-500'); btnA.classList.add('bg-blue-50', 'text-blue-700'); btnA.querySelector('span:first-child').classList.replace('text-slate-800', 'text-blue-800');
+        btnB.classList.replace('border-blue-500', 'border-slate-200'); btnB.classList.remove('bg-blue-50', 'text-blue-700'); btnB.querySelector('span:first-child').classList.replace('text-blue-800', 'text-slate-800');
+      } else {
+        btnB.classList.replace('border-slate-200', 'border-blue-500'); btnB.classList.add('bg-blue-50', 'text-blue-700'); btnB.querySelector('span:first-child').classList.replace('text-slate-800', 'text-blue-800');
+        btnA.classList.replace('border-blue-500', 'border-slate-200'); btnA.classList.remove('bg-blue-50', 'text-blue-700'); btnA.querySelector('span:first-child').classList.replace('text-blue-800', 'text-slate-800');
+      }
+    };
+
+    window.startGame = function() {
+      document.getElementById('setup-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('hidden');
+      document.getElementById('game-screen').classList.add('flex');
+      
+      clearInterval(globalTimer);
+      globalTimeLeft = GAME_TIME;
+      document.getElementById('global-time').innerText = globalTimeLeft;
+      document.getElementById('global-progress').style.width = '100%';
+
+      if (config.mode === 'B') {
+        sharedSequence = shuffle(Array.from({length: wordBank.length}, (_, i) => i));
+      }
+
+      const container = document.getElementById('players-container');
+      container.innerHTML = '';
+      playersState = {};
+
+      for (let i = 0; i < config.playerCount; i++) {
+        const theme = THEMES[i];
+        
+        playersState[theme.id] = {
+          score: 0,
+          usedIndices: [], 
+          seqIndex: 0,     
+          currentRound: null,
+          isLocked: false,
+          timeout: null
+        };
+
+        const pCol = document.createElement('div');
+        // 세로줄(border-r) 추가 및 넘침 방지
+        pCol.className = `flex-1 flex flex-col border-r-2 md:border-r-4 border-slate-900 ${theme.bgMain} relative overflow-hidden min-w-0`;
+        
+        pCol.innerHTML = `
+          <div class="h-12 md:h-16 flex items-center justify-between px-2 md:px-4 border-b-2 md:border-b-4 ${theme.border} bg-slate-900/50 flex-shrink-0">
+            <div class="flex items-center gap-1 md:gap-2 overflow-hidden w-2/3">
+              <span class="text-xl md:text-3xl flex-shrink-0">${theme.icon}</span>
+              <span class="text-xs sm:text-sm md:text-xl font-black ${theme.text} truncate break-keep">${theme.name}</span>
+            </div>
+            <div class="text-right flex-shrink-0 w-1/3">
+              <span class="text-[10px] md:text-sm text-slate-400 font-bold block leading-none mb-1">점수</span>
+              <span class="text-xl md:text-3xl font-black text-white leading-none" id="score-${theme.id}">0</span>
+            </div>
+          </div>
+          
+          <div class="flex-1 flex flex-col p-2 md:p-4 min-h-0 relative">
+            <div class="h-1/3 flex items-center justify-center text-center p-1">
+              <div id="word-${theme.id}" class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-md pop-in break-keep w-full">단어</div>
+            </div>
+            
+            <div id="choices-${theme.id}" class="h-2/3 grid grid-cols-2 grid-rows-2 gap-2 pb-1 md:pb-2"></div>
+            
+            <div id="feedback-${theme.id}" class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-10 bg-slate-900/60 backdrop-blur-sm">
+              <span class="text-[5rem] sm:text-[6rem] md:text-[8rem] font-black drop-shadow-[0_0_20px_rgba(0,0,0,0.5)]"></span>
+            </div>
+          </div>
+        `;
+        container.appendChild(pCol);
+        buildNextRound(theme.id);
+      }
+
+      globalTimer = setInterval(() => {
+        globalTimeLeft--;
+        document.getElementById('global-time').innerText = globalTimeLeft;
+        document.getElementById('global-progress').style.width = `${(globalTimeLeft / GAME_TIME) * 100}%`;
+        
+        if (globalTimeLeft <= 0) endGame();
+      }, 1000);
+    };
+
+    function buildNextRound(pid) {
+      const state = playersState[pid];
+      let wordIndex;
+
+      if (config.mode === 'A') {
+        let available = wordBank.map((_, i) => i).filter(i => !state.usedIndices.includes(i));
+        if (available.length === 0) { state.usedIndices = []; available = wordBank.map((_, i) => i); }
+        wordIndex = available[Math.floor(Math.random() * available.length)];
+        state.usedIndices.push(wordIndex);
+      } else {
+        wordIndex = sharedSequence[state.seqIndex % sharedSequence.length];
+        state.seqIndex++;
+      }
+
+      const entry = wordBank[wordIndex];
+      let wrongChoices = shuffle(entry.wrong).slice(0, CHOICES_PER_ROUND - 1);
+      while(wrongChoices.length < CHOICES_PER_ROUND - 1) { wrongChoices.push("오답"); }
+
+      const choices = shuffle([
+        ...wrongChoices.map(text => ({ text, isCorrect: false })),
+        { text: entry.correct, isCorrect: true }
+      ]);
+
+      state.currentRound = { word: entry.word, answer: entry.correct, choices };
+      state.isLocked = false;
+      renderRound(pid);
+    }
+
+    function renderRound(pid) {
+      const state = playersState[pid];
+      const theme = THEMES.find(t => t.id === pid);
+      
+      const wordEl = document.getElementById(`word-${pid}`);
+      wordEl.classList.remove('pop-in');
+      void wordEl.offsetWidth; 
+      wordEl.innerText = state.currentRound.word;
+      wordEl.classList.add('pop-in');
+
+      const choicesArea = document.getElementById(`choices-${pid}`);
+      choicesArea.innerHTML = '';
+      
+      state.currentRound.choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = `w-full h-full rounded-xl md:rounded-2xl border-2 md:border-4 border-slate-700 ${theme.bgCard} text-slate-200 text-xs sm:text-sm md:text-xl lg:text-3xl font-black shadow-md flex items-center justify-center break-keep leading-tight hover:border-slate-500 touch-none select-none p-1 md:p-2 text-center overflow-hidden`;
+        btn.innerHTML = `<span class="truncate w-full">${choice.text}</span>`;
+        
+        // ** 멀티터치 및 중복클릭 완전 차단 로직 **
+        btn.addEventListener('pointerdown', (e) => {
+          if (e.cancelable) e.preventDefault(); // 스크롤, 줌 등 브라우저 기본 행동 캔슬
+          handleChoice(pid, choice, btn, theme);
+        });
+        
+        choicesArea.appendChild(btn);
+      });
+    }
+
+    function handleChoice(pid, choice, btnElement, theme) {
+      const state = playersState[pid];
+      // 게임 종료 상태이거나 이미 터치하여 딜레이 중일 때 완전히 막음
+      if (globalTimeLeft <= 0 || state.isLocked) return;
+      state.isLocked = true; 
+
+      btnElement.classList.add('btn-pressed');
+      setTimeout(() => btnElement.classList.remove('btn-pressed'), 100);
+
+      const feedbackEl = document.getElementById(`feedback-${pid}`);
+      const feedbackText = feedbackEl.querySelector('span');
+
+      if (choice.isCorrect) {
+        state.score++;
+        document.getElementById(`score-${pid}`).innerText = state.score;
+        document.getElementById(`score-${pid}`).classList.add('text-amber-400', 'scale-125');
+        setTimeout(() => document.getElementById(`score-${pid}`).classList.remove('text-amber-400', 'scale-125'), 300);
+
+        btnElement.className = `w-full h-full rounded-xl md:rounded-2xl border-2 md:border-4 ${theme.correct} text-xs sm:text-sm md:text-xl lg:text-3xl font-black shadow-md flex items-center justify-center break-keep leading-tight touch-none p-1 md:p-2 overflow-hidden`;
+        btnElement.innerHTML = `<span class="truncate w-full">${choice.text}</span>`;
+        
+        feedbackText.innerText = '⭕';
+        feedbackText.className = "text-[6rem] md:text-[8rem] font-black text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.8)] pop-in";
+      } else {
+        btnElement.className = `w-full h-full rounded-xl md:rounded-2xl border-2 md:border-4 ${theme.wrong} text-xs sm:text-sm md:text-xl lg:text-3xl font-black shadow-md flex items-center justify-center break-keep leading-tight touch-none p-1 md:p-2 overflow-hidden`;
+        btnElement.innerHTML = `<span class="truncate w-full">${choice.text}</span>`;
+        
+        document.getElementById(`word-${pid}`).classList.add('shake');
+        setTimeout(() => document.getElementById(`word-${pid}`).classList.remove('shake'), 400);
+
+        feedbackText.innerText = '❌';
+        feedbackText.className = "text-[6rem] md:text-[8rem] font-black text-rose-500 drop-shadow-[0_0_20px_rgba(244,63,94,0.8)] pop-in";
+      }
+
+      feedbackEl.style.opacity = '1';
+
+      clearTimeout(state.timeout);
+      state.timeout = setTimeout(() => {
+        feedbackEl.style.opacity = '0';
+        buildNextRound(pid);
+      }, 500); // 0.5초 대기
+    }
+
+    function endGame() {
+      clearInterval(globalTimer);
+      Object.values(playersState).forEach(s => s.isLocked = true); // 모든 터치 봉인
+
+      const results = [];
+      for (let i = 0; i < config.playerCount; i++) {
+        results.push({
+          theme: THEMES[i],
+          score: playersState[THEMES[i].id].score
+        });
+      }
+      results.sort((a, b) => b.score - a.score);
+
+      const rankingContainer = document.getElementById('ranking-container');
+      rankingContainer.innerHTML = '';
+      
+      const medals = ['🥇 1등', '🥈 2등', '🥉 3등', '🏅 4등'];
+      
+      results.forEach((res, index) => {
+        const item = document.createElement('div');
+        item.className = `flex items-center justify-between p-3 md:p-5 rounded-2xl md:rounded-3xl bg-white border-2 md:border-4 ${res.theme.border} shadow-sm`;
+        item.innerHTML = `
+          <div class="flex items-center gap-2 md:gap-4 overflow-hidden w-2/3">
+            <span class="text-xl md:text-4xl font-black ${index === 0 ? 'text-amber-500' : 'text-slate-500'} w-12 md:w-24 flex-shrink-0">${medals[index]}</span>
+            <span class="text-3xl md:text-5xl flex-shrink-0">${res.theme.icon}</span>
+            <span class="text-lg sm:text-xl md:text-4xl font-black ${res.theme.text} truncate break-keep">${res.theme.name}</span>
+          </div>
+          <div class="text-2xl md:text-5xl font-black text-slate-800 flex-shrink-0 text-right w-1/3">
+            ${res.score} <span class="text-xs sm:text-sm md:text-2xl text-slate-400">점</span>
+          </div>
+        `;
+        rankingContainer.appendChild(item);
+      });
+
+      document.getElementById('result-screen').classList.remove('hidden');
+    }
+
+    window.goToHome = function() {
+      clearInterval(globalTimer);
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.add('hidden');
+      document.getElementById('game-screen').classList.remove('flex');
+      document.getElementById('setup-screen').classList.remove('hidden');
+    };
+  </script>
+</body>
+</html>
